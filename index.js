@@ -1,5 +1,6 @@
 const fs = require('fs');
-const http = require('http')
+const http = require('http');
+const url = require('url');
 
 //////////////////////////////////////
 // filesread write
@@ -14,7 +15,20 @@ const http = require('http')
 //erver request
 
 const server = http.createServer((req,res)=>{
-    res.end('Hello')
+    const pathName = req.url;
+    console.log("request",pathName)
+    if(pathName === '/' || pathName === '/overview'){
+        res.end('This is Overview')
+    } else if (pathName === '/product'){
+        res.end('This is Product')
+    }else {
+        res.writeHead(404,{
+            'Content-type':'text/html',
+            'my-own-header': 'Hello-World'
+        })
+        res.end('<h1>Page not found</h1>')
+    }
+    
 })
 
 server.listen(8000,'127.0.0.1',()=>{
